@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# List only directories in a folder
+#
+# Usage:
+# $ lsd [-a] [-l] [file_path]
+#
+# Positional Arguments:
+# * file_path: Folder to list directories for, defaults to current directory
+#
+# Options:
+# * [-a]: Include hidden directories
+# * [-l]: Formats output like `ls -l` command
+
+# Parese CLI optional and positional arguments -------------------------------
+while getopts "al" opt; do
+    case $opt in
+        a)
+            all=true;;
+        l)
+            details=true;;
+        \?)
+            exit 1;;
+        :)
+            exit 1;;
+    esac
+done
+
+all=${all:-false}
+details=${details:-false}
+shift $((OPTIND - 1))
+file_path=${1:-$(pwd)}
+
+# Generate output ------------------------------------------------------------
+if [[ "$all" = false && "$details" = false ]]; then
+    ls $file_path -l | grep ^d | awk '{ print $9 }'
+elif [[ "$all" = true && "$details" = false ]]; then
+    ls $file_path -la | grep ^d | awk '{ print $9 }'
+elif [[ "$details" = true && "$all" = false ]]; then
+    ls $file_path -l | grep ^d
+elif [[ "$details" = true && "$all" = true ]]; then
+    ls $file_path -la | grep ^d
+fi
