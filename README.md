@@ -4,6 +4,7 @@ Custom bash commands for added shell functionality
 # Available Commands
 
 * **lsd:** List only directories in a folder. Allows `-a` and `-l` functionality from the typical `ls` commands.
+* **pypi:** Automatically create a Python package and upload to PyPI.
 
 # Installation
 

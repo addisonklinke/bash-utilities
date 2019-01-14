@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# Create Python package and upload to PyPI
+#
+# Usage:
+# $ pypi [-o out_dir] [-t] [-k] input_dir usr pswd
+#
+# Positional arguments:
+# * input_dir: full path to folder containing the package's __init__.py
+# * usr and pswd: Credentials for PyPI (or Test PyPI)
+#
+# Options:
+# * [-o out_dir]: Save package to out_dir/pypi-upload, defaults to current directory.
+# * [-t]: test upload to Test PyPI instead of the actual PyPI
+# * [-k]: do not autoremove the pypi-upload folder after uploading
+#
+# Notes:
+# Make sure you have incremented the version number in setup.py before running
+# PyPI URLs written for twine v1.12.1
+
+# Parese CLI optional and positional arguments -------------------------------
+out_dir="."
+repo_url="https://upload.pypi.org/legacy/"
+keep=false
+
+while getopts "o:tk" opt; do
+    case $opt in
+        o)
+            if [ ! -d "$OPTARG" ]; then
+                echo "$OPTARG is not a valid directory"
+                exit 1
+            fi
+            out_dir=$OPTARG;;
+        t)
+            repo_url="https://test.pypi.org/legacy/";;
+        k)
+            keep=true;;
+        \?)
+            exit 1;;
+        :)
+            exit 1;;
+    esac
+done
+
+shift $((OPTIND - 1))
+if [ "$#" -ne 3 ]; then
+    echo "You must enter exactly 3 positional arguments"
+    exit 1
+fi
+input_dir=$1
+usr=$2
+pswd=$3
+
+# Determine package name -----------------------------------------------------
+pkg_name=$(cat "$input_dir/__init__.py" | 
+    grep ^name= | 
+    sed 's/name=//;s/[^a-zA-Z]//g')
+if [ -z $pkg_name ]; then
+    echo "__init__.py must have 'name=package_name' line"
+    exit 1
+fi 
+
+# Move files to package directory --------------------------------------------
+if [ ! -d "$out_dir/pypi-upload/$pkg_name" ]; then
+    mkdir -p "$out_dir/pypi-upload/$pkg_name"
+fi
+cp $input_dir/*.py $out_dir/pypi-upload/$pkg_name
+parent_dir=$(dirname $input_dir)
+cp $parent_dir/{LICENSE.txt,README.md,setup.py} $out_dir/pypi-upload
+
+# Build package and upload ---------------------------------------------------
+cd $out_dir/pypi-upload 
+python3 -m setup.py sdist bdist_wheel || true
+twine upload --repository-url $repo_url -u $usr -p $pswd dist/*
+
+# Clean up temporary pypi-upload folder --------------------------------------
+if [ "$keep" = false ]; then
+    echo "entered if-statement"
+    rm -r $parent_dir/pypi-upload
+fi
