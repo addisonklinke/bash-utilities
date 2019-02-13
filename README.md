@@ -26,6 +26,7 @@ Custom bash commands for added shell functionality
 
 # Future Ideas
 
-* **kill-top:** Determine top processes by CPU utilization and kill (for multithread programs)
+* **lsc:** Combination of find, grep, and wc to count the number of files in directories matching a regex
+* **mkill:** Grep for processes by name and kill (for multithread programs)
 * **mcp:** Multithreaded copy
 * **img-convert:** Check that all images in a directory have your desired format, and convert them if not 
