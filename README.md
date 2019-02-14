@@ -3,6 +3,7 @@ Custom bash commands for added shell functionality
 
 # Available Commands
 
+* **count:** Combination of find, grep, and wc to count the number of files in directories matching a regex
 * **lsd:** List only directories in a folder. Allows `-a` and `-l` functionality from the typical `ls` commands
 * **pypi:** Automatically create a Python package and upload to PyPI
 
@@ -26,7 +27,6 @@ Custom bash commands for added shell functionality
 
 # Future Ideas
 
-* **lsc:** Combination of find, grep, and wc to count the number of files in directories matching a regex
 * **mkill:** Grep for processes by name and kill (for multithread programs)
 * **mcp:** Multithreaded copy
 * **img-convert:** Check that all images in a directory have your desired format, and convert them if not 

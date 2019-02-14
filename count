@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Count files in a directory with a given ending
+#
+# Usage:
+# $ lsc [-E] [-r] regex [file_path]
+#
+# Positional Arguments:
+# * regex: Passed to grep to filter files
+# * [file_path]: Folder to count files for, defaults to current directory
+#
+# Options:
+# * [-E]: Enable extended regular expressions (i.e. egrep or grep -E)
+# * [-r]: Recursive, count files from file_path downwards
+
+# Parese CLI optional and positional arguments -------------------------------
+while getopts "Er" opt; do
+    case $opt in
+        E)
+            extended=true;;
+        r)
+            recursive=true;;
+        \?)
+            exit 1;;
+        :)
+            exit 1;;
+    esac
+done
+
+extended=${extended:-false}
+recursive=${recursive:-false}
+shift $((OPTIND - 1))
+regex=$1
+if [ -z "$1" ]; then
+    echo "Missing positional argument 'regex'"
+    exit 1
+fi
+file_path=${2:-$(pwd)}
+
+# Generate output ------------------------------------------------------------
+if [[ "$extended" = true ]]; then
+    search="egrep $regex"
+else
+    search="grep $regex"
+fi
+
+if [[ "$recursive" == true ]]; then
+    files="find $file_path -type f"
+else
+    files="ls $file_path"
+fi
+
+cmd="${files} | ${search} | wc -l"
+eval $cmd
