@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Bookmark a directory to easily cd there later.
+#
+# Usage:
+# $ bookmark [bookmark_dir]
+#
+# Positional arguments:
+# * bookmark_dir: Optional, otherwise defaults to current working directory
+
+bookmark=${1:-$(pwd)}
+export MARK=bookmark
