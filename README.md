@@ -1,13 +1,13 @@
 # bash-utilities
 Custom bash commands for added shell functionality
 
-# Available Commands
+## Available Commands
 
 * **count:** Combination of find, grep, and wc to count the number of files in directories matching a regex
 * **lsd:** List only directories in a folder. Allows `-a` and `-l` functionality from the typical `ls` commands
 * **pypi:** Automatically create a Python package and upload to PyPI
 
-# Installation
+## Installation
 
 **With Symlinks (Recommended)**
 
@@ -25,7 +25,11 @@ Custom bash commands for added shell functionality
 3. Make the new command executable `sudo chmod +x /usr/local/bin/<command_name_here>`
 4. Run from anywhere in terminal
 
-# Future Ideas
+## Dependencies 
+
+Commands are designed to run independently of each other, so you can install as few or as many as needed. 
+
+## Future Ideas
 
 * **mkill:** Grep for processes by name and kill (for multithread programs)
 * **mcp:** Multithreaded copy

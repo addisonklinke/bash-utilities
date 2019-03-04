@@ -3,7 +3,7 @@
 # Count files in a directory with a given ending
 #
 # Usage:
-# $ lsc [-E] [-r] regex [file_path]
+# $ lsc [-E] [-r] [-v] regex [file_path]
 #
 # Positional Arguments:
 # * regex: Passed to grep to filter files
@@ -12,14 +12,17 @@
 # Options:
 # * [-E]: Enable extended regular expressions (i.e. egrep or grep -E)
 # * [-r]: Recursive, count files from file_path downwards
+# * [-v]: Invert the sense of the match, count non-matching files
 
 # Parese CLI optional and positional arguments -------------------------------
-while getopts "Er" opt; do
+while getopts "Erv" opt; do
     case $opt in
         E)
             extended=true;;
         r)
             recursive=true;;
+        v)
+            invert=true;;
         \?)
             exit 1;;
         :)
@@ -29,6 +32,7 @@ done
 
 extended=${extended:-false}
 recursive=${recursive:-false}
+invert=${invert:-false}
 shift $((OPTIND - 1))
 regex=$1
 if [ -z "$1" ]; then
@@ -42,6 +46,10 @@ if [[ "$extended" = true ]]; then
     search="egrep $regex"
 else
     search="grep $regex"
+fi
+
+if [[ "$invert" == true ]]; then
+    search="$search -v"
 fi
 
 if [[ "$recursive" == true ]]; then
