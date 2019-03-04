@@ -1,12 +1,45 @@
 #!/bin/bash
 
-# Bookmark a directory to easily cd there later.
+# Bookmark directories in current session to easily cd there later.
 #
 # Usage:
-# $ bookmark [bookmark_dir]
+# $ bm [-c bookmark_number] [-l] [bookmark_dir]
 #
 # Positional arguments:
 # * bookmark_dir: Optional, otherwise defaults to current working directory
+#
+# Options:
+# * [-c bookmark_number]: Navigate to a specified bookmark using cd
+# * [-l]: List available bookmarks
 
+# Parse CLI optional and positional arguments --------------------------------
+while getopts "c:l" opt; do
+	case $opt in
+		c)
+			bm_num=$OPTARG;;
+		l)
+			list=true;;
+		\?)
+			exit 1;;
+		:)
+			exit 1;;
+	esac
+done
+
+bm_num=${bm_num:-0}
+list=${list:-false}
+if [[ "$list" = true && "$bm_num" != 0 ]]; then
+	echo "Options '-c' and '-l' are mutually exclusive"
+	exit 1
+fi
+shift $((OPTIND - 1))
 bookmark=${1:-$(pwd)}
-export MARK=bookmark
+
+# Execute command ------------------------------------------------------------
+if [[ "$list" = false && "$bm_num" = 0 ]]; then
+	echo "$bookmark" >> "$HOME/.bookmarks"
+elif [[ "$list" = true ]]; then
+	cat -n "$HOME/.bookmarks"
+elif [[ "$bm_num" != 0 ]]; then
+	echo $(eval "cat $HOME/.bookmarks | sed -n '${bm_num}p'")
+fi
