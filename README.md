@@ -3,7 +3,7 @@ Custom bash commands for added shell functionality
 
 ## Available Commands
 
-* **count:** Combination of find, grep, and wc to count the number of files in directories matching a regex
+* **count:** Combination of `find`, `grep`, and `wc` to count the number of files in directories matching a regex
 * **lsd:** List only directories in a folder. Allows `-a` and `-l` functionality from the typical `ls` commands
 * **pypi:** Automatically create a Python package and upload to PyPI
 
@@ -27,7 +27,7 @@ Custom bash commands for added shell functionality
 
 ## Dependencies 
 
-Commands are designed to run independently of each other, so you can install as few or as many as needed. 
+Commands are designed to run independently of each other, so you can install as few or as many as needed
 
 ## Future Ideas
 
