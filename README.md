@@ -13,7 +13,7 @@ Custom bash commands for added shell functionality
 1. Clone this repository: `git clone https://github.com/addisonklinke/bash-utilities.git`
 2. Navigate to the repository `cd bash-utilities`
 2. Identify the command you are interested in from the list above
-3. View the command's documentation with `cat <command_name_here> to identify whether it needs to be sourced by your `~/.bashrc`
+3. View the command's documentation with `cat <command_name_here>` to identify whether it needs to be sourced by your `~/.bashrc`
 4. Follow one of the two approaches below
 
 **With Symlinks (Recommended)**
