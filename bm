@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+# NOTE: you must source this file in your ~/.bashrc for the command to work
+#
 # Usage:
 # $ bm [command] [arguments]
 # 
