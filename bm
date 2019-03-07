@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Main launcher --------------------------------------------------------------
+
+bm () {
+	cmd=$1
+	if type "bm__$cmd" >/dev/null 2>&1; then
+		shift
+		"bm__$cmd" "$@"
+	else
+		bookmark=${1:-$(pwd)}
+		echo "$bookmark" >> $HOME/.bookmarks
+	fi	
+}
+
+# Individual commands -------------------------------------------------------- 
+bm__cd() { 
+	cd $(eval "cat $HOME/.bookmarks | sed -n '{$1}p'")
+}
+
+bm__clear() { rm "$HOME/.bookmarks"; }
+
+bm__list() { 
+	if [ -f "$HOME/.bookmarks" ]; then
+		cat -n "$HOME/.bookmarks"
+	else
+		echo "No existing boomarks, create one with 'bm [path]'"
+	fi
+}
