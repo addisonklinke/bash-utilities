@@ -15,7 +15,12 @@ bm () {
 
 # Individual commands -------------------------------------------------------- 
 bm__cd() { 
-	cd $(eval "cat $HOME/.bookmarks | sed -n '{$1}p'")
+	if [ -f "$HOME/.bookmarks" ]; then	
+		dest=$(cat $HOME/.bookmarks | sed -n "$1p")
+		cd $dest
+	else
+		echo "No existing bookmarks, create one with 'bm [path]'"
+	fi
 }
 
 bm__clear() { rm "$HOME/.bookmarks"; }
