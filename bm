@@ -1,4 +1,17 @@
 #!/bin/bash
+#
+# Usage:
+# $ bm [command] [arguments]
+# 
+# Commands:
+# bm [path]
+# cd index
+# clear
+# list
+#
+# Positional arguments:
+# * [path]: Filepath to bookmark, defaults to current directory
+# * index: Number of bookmark to navigate to 
 
 # Main launcher --------------------------------------------------------------
 
@@ -14,6 +27,7 @@ bm () {
 }
 
 # Individual commands -------------------------------------------------------- 
+
 bm__cd() { 
 	if [ -f "$HOME/.bookmarks" ]; then	
 		dest=$(cat $HOME/.bookmarks | sed -n "$1p")
