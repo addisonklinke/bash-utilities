@@ -8,11 +8,11 @@
 # Commands:
 # bm [path]
 # cd index
-# clear
+# clear [index]
 # list
 #
 # Positional arguments:
-# * [path]: Filepath to bookmark, defaults to current directory
+# * path: Filepath to bookmark, defaults to current directory
 # * index: Number of bookmark to navigate to 
 
 # Main launcher --------------------------------------------------------------
@@ -39,7 +39,13 @@ bm__cd() {
 	fi
 }
 
-bm__clear() { rm "$HOME/.bookmarks"; }
+bm__clear() { 
+    if [ -z "$1" ]; then
+        rm "$HOME/.bookmarks"
+    else
+        sed -i "$1d" "$HOME/.bookmarks"
+    fi
+}
 
 bm__list() { 
 	if [ -f "$HOME/.bookmarks" ]; then
