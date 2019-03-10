@@ -13,7 +13,7 @@
 #
 # Positional arguments:
 # * path: Filepath to bookmark, defaults to current directory
-# * index: Number of bookmark to navigate to 
+# * index: Number of bookmark to navigate to or clear
 
 # Main launcher --------------------------------------------------------------
 
@@ -24,7 +24,9 @@ bm () {
 		"bm__$cmd" "$@"
 	else
 		bookmark=${1:-$(pwd)}
-		echo "$bookmark" >> $HOME/.bookmarks
+		echo "$bookmark" >> "$HOME/.bookmarks"
+        cat "$HOME/.bookmarks" | sort | uniq >> "$HOME/.bookmarks.tmp"
+        mv "$HOME/.bookmarks.tmp" "$HOME/.bookmarks" 
 	fi	
 }
 
