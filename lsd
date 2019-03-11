@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# INSTALL: symlink or copy this file to /usr/local/bin
+#
 # List only directories in a folder
 #
 # Usage:

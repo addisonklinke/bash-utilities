@@ -1,6 +1,8 @@
 #!/bin/bash
+
+# INSTALL: source this file in your ~/.bashrc
 #
-# NOTE: you must source this file in your ~/.bashrc for the command to work
+# Bookmark directories to easily navigate there later
 #
 # Usage:
 # $ bm [command] [arguments]
