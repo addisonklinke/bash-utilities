@@ -20,27 +20,27 @@
 # Main launcher --------------------------------------------------------------
 
 bm () {
-	cmd=$1
-	if type "bm__$cmd" >/dev/null 2>&1; then
-		shift
-		"bm__$cmd" "$@"
-	else
-		bookmark=${1:-$(pwd)}
-		echo "$bookmark" >> "$HOME/.bookmarks"
+    cmd=$1
+    if type "bm__$cmd" >/dev/null 2>&1; then
+        shift
+        "bm__$cmd" "$@"
+    else
+        bookmark=${1:-$(pwd)}
+        echo "$bookmark" >> "$HOME/.bookmarks"
         cat "$HOME/.bookmarks" | sort | uniq >> "$HOME/.bookmarks.tmp"
         mv "$HOME/.bookmarks.tmp" "$HOME/.bookmarks" 
-	fi	
+    fi	
 }
 
 # Individual commands -------------------------------------------------------- 
 
 bm__cd() { 
-	if [ -f "$HOME/.bookmarks" ]; then	
-		dest=$(cat $HOME/.bookmarks | sed -n "$1p")
-		cd $dest
-	else
-		echo "No existing bookmarks, create one with 'bm [path]'"
-	fi
+    if [ -f "$HOME/.bookmarks" ]; then	
+        dest=$(cat $HOME/.bookmarks | sed -n "$1p")
+        cd $dest
+    else
+        echo "No existing bookmarks, create one with 'bm [path]'"
+    fi
 }
 
 bm__clear() { 
@@ -52,9 +52,9 @@ bm__clear() {
 }
 
 bm__list() { 
-	if [ -f "$HOME/.bookmarks" ]; then
-		cat -n "$HOME/.bookmarks"
-	else
-		echo "No existing boomarks, create one with 'bm [path]'"
-	fi
+    if [ -f "$HOME/.bookmarks" ]; then
+        cat -n "$HOME/.bookmarks"
+    else
+        echo "No existing boomarks, create one with 'bm [path]'"
+    fi
 }
