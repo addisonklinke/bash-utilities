@@ -11,6 +11,7 @@ Addison Klinke
 * **count:** Combination of `find`, `grep`, and `wc` to count the number of files in directories matching a regex
 * **lsd:** List only directories in a folder. Allows `-a` and `-l` functionality from the typical `ls` commands
 * **pypi:** Automatically create a Python package and upload to PyPI
+* **up:** Move up in the directory tree by a specified number of levels
 
 ## Installation
 
