@@ -7,7 +7,7 @@
 # Usage:
 # $ pypi [-o out_dir] [-t] [-k] input_dir usr pswd
 #
-# Positional arguments:
+# Positional Arguments:
 # * input_dir: full path to folder containing the package's __init__.py
 # * usr and pswd: Credentials for PyPI (or Test PyPI)
 #

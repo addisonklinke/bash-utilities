@@ -13,7 +13,7 @@
 # bm clear [index]
 # bm list
 #
-# Positional arguments:
+# Positional Arguments:
 # * path: Filepath to bookmark, defaults to current directory
 # * index: Number of bookmark to navigate to or clear
 
