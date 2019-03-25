@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# INSTALL: source this file in your ~/.bashrc
+#
+# Move up in the directory tree by a specified number of levels
+#
+# Usage:
+# $ up [levels]
+#
+# Positional Aguments:
+# * level: Number of levels to move up (default 1)
+
+up() {
+	level=${1:-1}
+	cmd="cd "
+	for ((i=0; i<$level; i++)); do
+		cmd="$cmd../"
+	done
+	eval $cmd
+}
