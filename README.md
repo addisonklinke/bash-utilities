@@ -27,3 +27,32 @@ After completing the above steps, you should be able to run the command from any
 ## Dependencies 
 
 Commands are designed to run independently of each other, so you can install as few or as many as needed
+
+## Contributing
+
+1. Create a branch off master named `feature/*` with a descriptive feature name
+2. Write your command(s) following the documentation style guide below
+3. Make a pull request
+
+## Documentation Style
+
+All bash files should begin with the following header template
+```
+#!/bin/bash
+
+# INSTALL: describe method here
+#
+# One-liner saying what the command does
+#
+# Usage:
+# $ my_command [-a] [-b] [-c value] position1 [position2]
+#
+# Positional Arguments:
+# * position1: Required arguments are listed without brackets
+# * [position2]: Optional arguments are listed with brackets
+#
+# Options:
+# * [-a]: Description of the first flag
+# * [-b]: Second flag description
+# * [-c]: ...
+```
