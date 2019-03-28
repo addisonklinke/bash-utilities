@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# INSTALL: symlink or copy this file to /usr/local/bin
+#
+# Move all files in subdirectories to the current level
+#
+# Usage:
+# $ condense [-c] [-o output] [source]
+#
+# Positional Arguments:
+# * [source]: Root directory to start recursively condensing files from
+#
+# Options:
+# * [-c]: Copy files instead of moving
+# * [-o output]: Output directory to transport files to (defaults to source)
+
+# Parse CLI optional and positional arguments --------------------------------
+while getopts "co:" opt; do
+    case $opt in
+        c)
+            copy=true;;
+        o)
+            output=$OPTARG;;
+        \?)
+            exit 1;;
+        :)
+            exit 1;;
+    esac
+done
+
+copy=${copy:-false}
+shift $((OPTIND - 1))
+source=${1:-$(pwd)}
+
+if [ -z "$output" ]; then
+    output=$source
+    keep_source=true
+fi
+
+# Execute command ------------------------------------------------------------
+search="find $source -type f"
+if [[ "$copy" = true ]]; then
+    transport="xargs -I {} cp {} $output"
+else
+    transport="xargs -I {} mv {} $output"
+fi
+
+cmd="$search | $transport"
+eval $cmd
+
+if [[ "$keep_source" = true ]]; then
+    find $source -mindepth 1 -type d -delete
+else
+    find $source -type d -delete
+fi
