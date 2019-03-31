@@ -5,20 +5,23 @@
 # List only directories in a folder
 #
 # Usage:
-# $ lsd [-a] [-l] [file_path]
+# $ lsd [-a] [-c] [-l] [file_path]
 #
 # Positional Arguments:
 # * file_path: Folder to list directories for, defaults to current directory
 #
 # Options:
 # * [-a]: Include hidden directories
+# * [-c]: Print file count next to directory
 # * [-l]: Formats output like `ls -l` command
 
 # Parese CLI optional and positional arguments -------------------------------
-while getopts "al" opt; do
+while getopts "alc" opt; do
     case $opt in
         a)
             all=true;;
+        c)
+            count=true;;
         l)
             details=true;;
         \?)
@@ -29,17 +32,19 @@ while getopts "al" opt; do
 done
 
 all=${all:-false}
+count=${count:-false}
 details=${details:-false}
 shift $((OPTIND - 1))
 file_path=${1:-$(pwd)}
 
 # Generate output ------------------------------------------------------------
-if [[ "$all" = false && "$details" = false ]]; then
-    ls $file_path -l | grep ^d | awk '{ print $9 }'
-elif [[ "$all" = true && "$details" = false ]]; then
-    ls $file_path -la | grep ^d | awk '{ print $9 }'
-elif [[ "$details" = true && "$all" = false ]]; then
-    ls $file_path -l | grep ^d
-elif [[ "$details" = true && "$all" = true ]]; then
-    ls $file_path -la | grep ^d
+cmd="ls $file_path -l"
+if [[ "$all" = true ]]; then
+    cmd="$cmd -a"
 fi
+
+cmd="$cmd | grep ^d"
+if [[ "$details" = false ]]; then
+    cmd="$cmd | awk '{ print \$9 }'"
+fi
+eval $cmd
