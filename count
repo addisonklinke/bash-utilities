@@ -45,9 +45,9 @@ file_path=${2:-$(pwd)}
 
 # Generate output ------------------------------------------------------------
 if [[ "$extended" = true ]]; then
-    search="egrep $regex"
+    search="egrep \"$regex\""
 else
-    search="grep $regex"
+    search="grep \"$regex\""
 fi
 
 if [[ "$invert" == true ]]; then
