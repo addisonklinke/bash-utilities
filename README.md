@@ -24,10 +24,6 @@ Addison Klinke
 
 After completing the above steps, you should be able to run the command from anywhere in terminal
 
-## Dependencies 
-
-Commands are designed to run independently of each other, so you can install as few or as many as needed
-
 ## Contributing
 
 1. Create a branch off master named `feature/*` with a descriptive feature name

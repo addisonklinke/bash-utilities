@@ -37,6 +37,11 @@ details=${details:-false}
 shift $((OPTIND - 1))
 file_path=${1:-$(pwd)}
 
+if [[ "$count" = true && "$details" = true ]]; then
+    echo "Options -c and -l are mutally exclusive"
+    exit 1
+fi
+
 # Generate output ------------------------------------------------------------
 cmd="ls $file_path -l"
 if [[ "$all" = true ]]; then
@@ -46,5 +51,9 @@ fi
 cmd="$cmd | grep ^d"
 if [[ "$details" = false ]]; then
     cmd="$cmd | awk '{ print \$9 }'"
+fi
+
+if [[ "$count" = true ]]; then
+    cmd="paste <($cmd | xargs -I {} count \".*\" {}) <($cmd)"
 fi
 eval $cmd
