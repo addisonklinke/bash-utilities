@@ -26,9 +26,13 @@ bm () {
         "bm__$cmd" "$@"
     else
         bookmark=${1:-$(pwd)}
-        echo "$bookmark" >> "$HOME/.bookmarks"
-        cat "$HOME/.bookmarks" | sort | uniq >> "$HOME/.bookmarks.tmp"
-        mv "$HOME/.bookmarks.tmp" "$HOME/.bookmarks" 
+        if [[ ! -d "$bookmark" ]]; then
+            echo "$bookmark is not a directory"
+        else
+            echo "$bookmark" >> "$HOME/.bookmarks"
+            cat "$HOME/.bookmarks" | sort | uniq >> "$HOME/.bookmarks.tmp"
+            mv "$HOME/.bookmarks.tmp" "$HOME/.bookmarks" 
+        fi
     fi	
 }
 
