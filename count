@@ -51,6 +51,9 @@ if [[ ! -d "$file_path" ]]; then
     exit 1
 fi
 shift $((OPTIND - 1))
+if [[ "$unique" == true && ! -z $1 ]]; then
+    echo "Warning: option '-u' may not be meaningful if regex is supplied"
+fi 
 regex=\"${1:-.*}\"
 
 # Generate output ------------------------------------------------------------
