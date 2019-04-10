@@ -5,7 +5,7 @@
 # Count files in a directory with a given ending
 #
 # Usage:
-# $ lsc [-E] [-r] [-v] regex [file_path]
+# $ count [-E] [-r] [-v] regex [file_path]
 #
 # Positional Arguments:
 # * regex: Passed to grep to filter files
