@@ -5,12 +5,13 @@
 # Count files in a directory with a given ending
 #
 # Usage:
-# $ count [-E] [-r] [-u] [-v] [-d file_path] [regex]
+# $ count [-a] [-E] [-r] [-u] [-v] [-d file_path] [regex]
 #
 # Positional Arguments:
 # * [regex]: Passed to grep to filter files, defaults to match all files
 #
 # Options:
+# * [-a]: Include hidden files and directories
 # * [-d file_path]: Folder to count files for, defaults to current directory
 # * [-E]: Enable extended regular expressions (i.e. egrep or grep -E)
 # * [-r]: Recursive, count files from file_path downwards
@@ -18,8 +19,10 @@
 # * [-v]: Invert the sense of the match, count non-matching files
 
 # Parese CLI optional and positional arguments -------------------------------
-while getopts "d:Eruv" opt; do
+while getopts "ad:Eruv" opt; do
     case $opt in
+        a)
+            hidden=true;;
         d)
             file_path=$OPTARG;;
         E)
@@ -37,6 +40,7 @@ while getopts "d:Eruv" opt; do
     esac
 done
 
+hidden=${hidden:-false}
 extended=${extended:-false}
 recursive=${recursive:-false}
 unique=${unique:-false}
@@ -60,14 +64,18 @@ if [[ "$invert" == true ]]; then
     search="$search -v"
 fi
 
-if [[ "$recursive" == true ]]; then
-    files="find $file_path -type f"
-else
-    files="find $file_path -maxdepth 1 -type f | sed 's/^.*\///'"
+files="find $filepath"
+if [[ "$recursive" == false ]]; then
+    files="$files -maxdepth 1"
 fi
 
+if [[ "$hidden" == false ]]; then
+    files="$files -not -path '*/\.*'"
+fi
+files="$files -type f -printf '%f\n'"
+
 if [[ "$unique" == true ]]; then
-    display="sed '/\./! s/.*/None/' | sed 's/^.*\./\*\./' | sort | uniq -c"
+    display="sed '/\./! s/.*/ None/' | sed 's/^.*\./ \*\./' | sort | uniq -c"
 else
     display="wc -l"
 fi
