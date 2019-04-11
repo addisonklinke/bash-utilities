@@ -51,4 +51,7 @@ All bash files should begin with the following header template
 # * [-a]: Description of the first flag
 # * [-b]: Second flag description
 # * [-c]: ...
+#
+# Notes:
+# Further information about the command (optional)
 ```
