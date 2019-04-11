@@ -5,21 +5,20 @@
 # Count files in a directory with a given ending
 #
 # Usage:
-# $ count [-a] [-E] [-r] [-u] [-v] [-d file_path] [regex]
+# $ count [-a] [-d directory] [-E] [-r] [-v] [regex]
 #
 # Positional Arguments:
 # * [regex]: Passed to grep to filter files, defaults to match all files
 #
 # Options:
 # * [-a]: Include hidden files and directories
-# * [-d file_path]: Folder to count files for, defaults to current directory
+# * [-d directory]: Relative path for folder to count files for, default none
 # * [-E]: Enable extended regular expressions (i.e. egrep or grep -E)
 # * [-r]: Recursive, count files from file_path downwards
-# * [-u]: Display unique file extensions with their counts
 # * [-v]: Invert the sense of the match, count non-matching files
 
 # Parese CLI optional and positional arguments -------------------------------
-while getopts "ad:Eruv" opt; do
+while getopts "ad:Erv" opt; do
     case $opt in
         a)
             hidden=true;;
@@ -29,8 +28,6 @@ while getopts "ad:Eruv" opt; do
             extended=true;;
         r)
             recursive=true;;
-        u)
-            unique=true;;
         v)
             invert=true;;
         \?)
@@ -43,45 +40,43 @@ done
 hidden=${hidden:-false}
 extended=${extended:-false}
 recursive=${recursive:-false}
-unique=${unique:-false}
 invert=${invert:-false}
-file_path=${file_path:-$(pwd)}
+file_path="$(pwd)/$file_path"
 if [[ ! -d "$file_path" ]]; then
     echo "$file_path is not a directory"
     exit 1
 fi
 shift $((OPTIND - 1))
-if [[ "$unique" == true && ! -z $1 ]]; then
-    echo "Warning: option '-u' may not be meaningful if regex is supplied"
-fi 
+if [[ -z "$1" ]]; then
+    all=true
+fi
+all=${all:-false}
 regex=\"${1:-.*}\"
 
 # Generate output ------------------------------------------------------------
-if [[ "$extended" = true ]]; then
-    search="egrep $regex"
-else
-    search="grep $regex"
-fi
-
-if [[ "$invert" == true ]]; then
-    search="$search -v"
-fi
-
-files="find $filepath"
+files="find ${file_path}"
 if [[ "$recursive" == false ]]; then
-    files="$files -maxdepth 1"
+    files="${files} -maxdepth 1"
 fi
 
 if [[ "$hidden" == false ]]; then
-    files="$files -not -path '*/\.*'"
+    files="${files} -not -path '*/\.*'"
 fi
-files="$files -type f -printf '%f\n'"
+files="${files} -type f -printf '%f\n'"
 
-if [[ "$unique" == true ]]; then
-    display="sed '/\./! s/.*/ None/' | sed 's/^.*\./ \*\./' | sort | uniq -c"
+if [[ "$all" == true ]]; then
+    substitutions="sed '/\./! s/.*/ None/' | sed 's/^.*\./ \*\./'"
+    cmd="${files} | ${substitutions} | sort | uniq -c"
 else
-    display="wc -l"
+    if [[ "$extended" = true ]]; then
+        search="egrep ${regex}"
+    else
+        search="grep ${regex}"
+    fi
+    if [[ "$invert" == true ]]; then
+        search="${search} -v"
+    fi
+    cmd="${files} | ${search} | wc -l"
 fi
 
-cmd="${files} | ${search} | ${display}"
 eval $cmd
