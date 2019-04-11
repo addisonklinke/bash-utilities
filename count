@@ -16,6 +16,10 @@
 # * [-E]: Enable extended regular expressions (i.e. egrep or grep -E)
 # * [-r]: Recursive, count files from file_path downwards
 # * [-v]: Invert the sense of the match, count non-matching files
+#
+# Notes:
+# Hidden files (starting with ".") are displayed in the counts without
+# a "*." prefix to distinguish them from actual file extensions
 
 # Parese CLI optional and positional arguments -------------------------------
 while getopts "ad:Erv" opt; do
@@ -65,7 +69,7 @@ fi
 files="${files} -type f -printf '%f\n'"
 
 if [[ "$all" == true ]]; then
-    substitutions="sed '/\./! s/.*/ None/' | sed 's/^.*\./ \*\./'"
+    substitutions="sed '/\./! s/.*/None/' | sed -r 's/^.+\./\*\./'"
     cmd="${files} | ${substitutions} | sort | uniq -c | sort -nrk1"
 else
     if [[ "$extended" = true ]]; then
