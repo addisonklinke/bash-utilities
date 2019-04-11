@@ -66,7 +66,7 @@ files="${files} -type f -printf '%f\n'"
 
 if [[ "$all" == true ]]; then
     substitutions="sed '/\./! s/.*/ None/' | sed 's/^.*\./ \*\./'"
-    cmd="${files} | ${substitutions} | sort | uniq -c"
+    cmd="${files} | ${substitutions} | sort | uniq -c | sort -nrk1"
 else
     if [[ "$extended" = true ]]; then
         search="egrep ${regex}"
