@@ -5,23 +5,24 @@
 # List only directories in a folder
 #
 # Usage:
-# $ lsd [-a] [-c] [-l] [file_path]
+# $ lsd [-a] [-c regex] [-l] [file_path]
 #
 # Positional Arguments:
 # * file_path: Folder to list directories for, defaults to current directory
 #
 # Options:
 # * [-a]: Include hidden directories
-# * [-c]: Print file count next to directory
+# * [-c regex]: Print file count matching the regex next to each directory
 # * [-l]: Formats output like `ls -l` command
 
 # Parese CLI optional and positional arguments -------------------------------
-while getopts "alc" opt; do
+while getopts "alc:" opt; do
     case $opt in
         a)
             all=true;;
         c)
-            count=true;;
+            count=true
+            regex=\"$OPTARG\";;
         l)
             details=true;;
         \?)
@@ -54,6 +55,6 @@ if [[ "$details" = false ]]; then
 fi
 
 if [[ "$count" = true ]]; then
-    cmd="paste <($cmd | xargs -I {} count -d {} \".*\") <($cmd)"
+    cmd="paste <($cmd | xargs -I {} count -d {} $regex) <($cmd)"
 fi
 eval $cmd
