@@ -55,6 +55,6 @@ if [[ "$details" = false ]]; then
 fi
 
 if [[ "$count" = true ]]; then
-    cmd="paste <($cmd | xargs -I {} count -d {} $regex) <($cmd)"
+    cmd="paste <($cmd | xargs -I {} count -d {} $regex) <($cmd) | sort -nk1 -r"
 fi
 eval $cmd
