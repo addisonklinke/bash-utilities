@@ -2,7 +2,7 @@
 
 # INSTALL: symlink or copy this file to /usr/local/bin
 #
-# Move all files in subdirectories to the current level
+# Move all files in subdirectories to the current level and delete duplicates
 #
 # Usage:
 # $ condense [-c] [-o output] [source]
@@ -13,6 +13,10 @@
 # Options:
 # * [-c]: Copy files instead of moving
 # * [-o output]: Output directory to transport files to (defaults to source)
+#
+# Notes:
+# The root directory will be searched for duplicate files using fdupes. If any
+# changes are made, they are printed to stdout with [+/-] notation
 
 # Parse CLI optional and positional arguments --------------------------------
 while getopts "co:" opt; do
@@ -38,7 +42,8 @@ if [ -z "$output" ]; then
 fi
 
 # Execute command ------------------------------------------------------------
-search="find $source -type f"
+fdupes -drqN $source
+search="find $source -mindepth 2 -type f"
 if [[ "$copy" = true ]]; then
     transport="xargs -I {} cp {} $output"
 else
