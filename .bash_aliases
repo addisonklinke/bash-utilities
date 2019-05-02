@@ -3,3 +3,5 @@ alias maintenance='sudo apt update && sudo apt dist-upgrade && sudo apt autoremo
 alias disk='df -h | egrep -v "(snap|run)"'
 alias lsh='ls | head'
 alias lt='tree --noreport -d -L 3'
+alias sum='paste -sd+ | bc'
+alias glog='git --no-pager log -n 10 --pretty=oneline'
