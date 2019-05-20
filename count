@@ -5,7 +5,7 @@
 # Count files in a directory with a given ending
 #
 # Usage:
-# $ count [-a] [-d directory] [-E] [-r] [-v] [regex]
+# $ count [-a] [-d directory] [-E] [-L] [-r] [-v] [regex]
 #
 # Positional Arguments:
 # * [regex]: Passed to grep to filter files, defaults to match all files
@@ -14,6 +14,7 @@
 # * [-a]: Include hidden files and directories
 # * [-d directory]: Relative path for folder to count files for, default none
 # * [-E]: Enable extended regular expressions (i.e. egrep or grep -E)
+# * [-L]: Follow symbolic links
 # * [-r]: Recursive, count files from file_path downwards
 # * [-v]: Invert the sense of the match, count non-matching files
 #
@@ -22,7 +23,7 @@
 # a "*." prefix to distinguish them from actual file extensions
 
 # Parese CLI optional and positional arguments -------------------------------
-while getopts "ad:Erv" opt; do
+while getopts "ad:ELrv" opt; do
     case $opt in
         a)
             hidden=true;;
@@ -30,6 +31,8 @@ while getopts "ad:Erv" opt; do
             file_path=$OPTARG;;
         E)
             extended=true;;
+        L)
+            symbolic=true;;
         r)
             recursive=true;;
         v)
@@ -43,6 +46,7 @@ done
 
 hidden=${hidden:-false}
 extended=${extended:-false}
+symbolic=${symbolic:-false}
 recursive=${recursive:-false}
 invert=${invert:-false}
 file_path="$(pwd)/$file_path"
@@ -57,17 +61,21 @@ fi
 all=${all:-false}
 regex=\"${1:-.*}\"
 
-# Generate output ------------------------------------------------------------
-files="find ${file_path}"
+# Find files matching criteria -----------------------------------------------
+if [[ "$symbolic" == true ]]; then
+    files="find -L ${file_path}"
+else
+    files="find ${file_path}"
+fi
 if [[ "$recursive" == false ]]; then
     files="${files} -maxdepth 1"
 fi
-
 if [[ "$hidden" == false ]]; then
     files="${files} -not -path '*/\.*'"
 fi
 files="${files} -type f -printf '%f\n'"
 
+# Filter and count based on file endings -------------------------------------
 if [[ "$all" == true ]]; then
     substitutions="sed '/\./! s/.*/None/' | sed -r 's/^.+\./\*\./'"
     cmd="${files} | ${substitutions} | sort | uniq -c | sort -nrk1"
@@ -83,4 +91,5 @@ else
     cmd="${files} | ${search} | wc -l"
 fi
 
+# Run composite command ------------------------------------------------------
 eval $cmd
