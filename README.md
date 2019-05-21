@@ -21,6 +21,7 @@ Addison Klinke
 3. Identify the command you are interested in from the list above
 4. Make the command executable: `sudo chmod +x <command_name>`
 5. Determine the command's installation method with `sed -n '3p' <command_name>`
+6. (Optional) Copy or symlink the `.bashrc` and `.vimrc` files to your home directory
 
 After completing the above steps, you should be able to run the command from anywhere in terminal
 
