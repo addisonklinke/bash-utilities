@@ -1,5 +1,6 @@
 alias vba='vim ~/.bash_aliases'
 alias maintenance='sudo apt update && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y'
+alias ncores='cat /proc/cpuinfo | grep processor | wc -l'
 alias files='ls -U | wc -l'
 alias disk='df -h | egrep -v "(snap|run)"'
 alias lsh='ls | head'
