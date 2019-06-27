@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# INSTALL: symlink or copy this file to /usr/local/bin 
+#
+# Paginated command line viewer for column-based data
+#
+# Usage:
+# $ pview [-s separator] filepath 
+#
+# Positional Arguments:
+# * filepath: Path to text data
+#
+# Options:
+# * [-s separator]: Column separator token (default comma)
+#
+# Notes:
+# Adapted from Stefaan Lippens
+# https://www.stefaanlippens.net/pretty-csv.html
+
+# Parse CLI optional and positional arguments --------------------------------
+while getopts "s:" opt; do
+    case $opt in
+        s)
+            separator=\"$OPTARG\";;
+        \?)
+            exit 1;;
+        :)
+            exit 1;;
+    esac
+done
+
+separator=${separator:-","}
+filepath=$1
+
+# Execute command ------------------------------------------------------------
+column -t -s";" -n "${filepath}" | less -FSXK
