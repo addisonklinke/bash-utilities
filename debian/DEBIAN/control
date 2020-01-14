@@ -1,0 +1,7 @@
+Package: bash-utils
+Version: 0.1-0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Addison Klinke <agk38@case.edu>
+Description: Custom bash commands for added shell functionality
