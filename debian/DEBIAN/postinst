@@ -3,4 +3,4 @@
 echo "# Added by bash-utils installer" >> ~/.bashrc
 echo "source /usr/local/bin/bm" >> ~/.bashrc
 echo "source /usr/local/bin/up" >> ~/.bashrc
-echo "Please run source ~/.bashrc to complete setup"
+echo "Please run 'source ~/.bashrc' to complete setup"
