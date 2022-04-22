@@ -17,6 +17,12 @@ Addison Klinke
 
 ## Installation
 
+### From Apt (Recommended)
+
+Follow [instructions](https://github.com/addisonklinke/ppa#installation) in my `ppa` repository
+
+### Manual (for Development)
+
 1. Clone this repository: `git clone https://github.com/addisonklinke/bash-utilities.git`
 2. Navigate to the repository `cd bash-utilities`
 3. Identify the command you are interested in from the list above
